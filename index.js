@@ -3,7 +3,7 @@ const chalk = require("chalk");
 const moment = require("moment");
 const Table = require("cli-table3");
 const puppeteer = require("puppeteer");
-require("dotenv").config({ path: `${os.homedir()}/.paylocity` });
+require("dotenv").config({path: `${os.homedir()}/.paylocity`});
 
 const URI = "https://webtime2.paylocity.com/WebTime/Employee/Timesheet";
 
@@ -53,7 +53,7 @@ function getPage() {
           hoursToday: document
             .querySelector(
               `#TimesheetContainer #Timesheet > tbody > #TimeSheet_${today.getDay() -
-                1}_`
+              1}_`
             )
             .querySelector("table tr")
             .children[2].children[0].textContent.trim()
@@ -79,7 +79,6 @@ function getLeavingHour(current, total) {
 }
 
 function formathours(hours) {
-  const isNegative = hours < 0 ? true : false;
   const h = Math.floor(hours);
   let m = String(((hours % 1) * 60).toFixed(0));
   if (m === "0") m = "00";
@@ -107,6 +106,17 @@ function difference(hours, comparison) {
   return differenceOut;
 }
 
+/**
+ * Convert hours and minutes to a string.
+ *
+ * @param {float} hours
+ * @param {float} minutes
+ * @returns {string} In format HH:mm
+ */
+function formatTimeToString(hours, minutes) {
+  return hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0')
+}
+
 async function init() {
   try {
     const today = new Date();
@@ -119,6 +129,14 @@ async function init() {
     clockIn.setMinutes(hoursToday[1]);
     const currentHours = Math.abs(today - clockIn) / 36e5;
     totalHours = (Number(currentHours) + Number(totalHours)).toFixed(2);
+
+    if ((5 - today.getDay()) > 0) {
+      let total_hours_by_now = today.getDay() * 9;
+      let pending = total_hours_by_now - currentHours;
+      let pending_minutes = parseInt((pending % 1) * 60);
+      let pending_hours = parseInt(pending);
+      console.log('Today hrs pending: ', formatTimeToString(pending_hours, pending_minutes));
+    }
 
     console.log("TODAY HOURS", currentHours);
 
