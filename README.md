@@ -11,7 +11,7 @@ Simple paylocity CLI to see worked hours using data scrapping
   - PAYLOCITY_USER=xxx
   - PAYLOCITY_PASSWORD=xxx
   - PAYLOCITY_FINGERPRINT=xxx
-  For the fingerprint, login first in a browser and using the developer console get the finger print remember to save the device in orfer to get the finger print
+  For the fingerprint, login first in a browser and using the developer console get the finger print. Remember to save the device in order to get the finger print
   `document.getElementById('PaylocityFingerprintData').value` copy and paste without the leading and last quotes.
 * run `npm install`
 
