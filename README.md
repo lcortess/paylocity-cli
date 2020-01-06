@@ -5,6 +5,7 @@ Simple paylocity CLI to see worked hours using data scrapping
 
 * Download and uncompress the project into a folder
 * Copy the .paylocity.example into your home directory
+  - `cp .paylocity.example ~/.apylocity`
 * Fill the params:
   - PAYLOCITY_COMPANY=xxx
   - PAYLOCITY_USER=xxx
