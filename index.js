@@ -3,7 +3,7 @@ const chalk = require("chalk");
 const moment = require("moment");
 const Table = require("cli-table3");
 const puppeteer = require("puppeteer");
-require("dotenv").config({path: `${os.homedir()}/.paylocity`});
+require("dotenv").config({ path: `${os.homedir()}/.paylocity` });
 
 const URI = "https://webtime2.paylocity.com/WebTime/Employee/Timesheet";
 
@@ -53,7 +53,7 @@ function getPage() {
           hoursToday: document
             .querySelector(
               `#TimesheetContainer #Timesheet > tbody > #TimeSheet_${today.getDay() -
-              1}_`
+                1}_`
             )
             .querySelector("table tr")
             .children[2].children[0].textContent.trim()
@@ -71,9 +71,11 @@ function getPage() {
   });
 }
 
-function getLeavingHour(current, total) {
+function getLeavingHour(totalHours, current, goal) {
   const date = moment();
-  date.add(total - current, "hours");
+  const targetToday = goal * new Date().getDay();
+  const totalDifference = targetToday - Number(totalHours);
+  date.add(totalDifference, "hours");
 
   return date.format("HH:mm");
 }
@@ -114,7 +116,11 @@ function difference(hours, comparison) {
  * @returns {string} In format HH:mm
  */
 function formatTimeToString(hours, minutes) {
-  return hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0')
+  return (
+    hours.toString().padStart(2, "0") +
+    ":" +
+    minutes.toString().padStart(2, "0")
+  );
 }
 
 async function init() {
@@ -130,12 +136,15 @@ async function init() {
     const currentHours = Math.abs(today - clockIn) / 36e5;
     totalHours = (Number(currentHours) + Number(totalHours)).toFixed(2);
 
-    if ((5 - today.getDay()) > 0) {
+    if (5 - today.getDay() > 0) {
       let total_hours_by_now = today.getDay() * 9;
       let pending = total_hours_by_now - currentHours;
       let pending_minutes = parseInt((pending % 1) * 60);
       let pending_hours = parseInt(pending);
-      console.log('Today hrs pending: ', formatTimeToString(pending_hours, pending_minutes));
+      console.log(
+        "Today hrs pending: ",
+        formatTimeToString(pending_hours, pending_minutes)
+      );
     }
 
     console.log("TODAY HOURS", currentHours);
@@ -148,21 +157,21 @@ async function init() {
       "Minimum (7)",
       `${totalHours} of 35`,
       difference(totalHours, 35),
-      getLeavingHour(currentHours, 7)
+      getLeavingHour(totalHours, currentHours, 7)
     ]);
 
     table.push([
       "Minimum (8)",
       `${totalHours} of 40`,
       difference(totalHours, 40),
-      getLeavingHour(currentHours, 8)
+      getLeavingHour(totalHours, currentHours, 8)
     ]);
 
     table.push([
       "Minimum (9)",
       `${totalHours} of 45`,
       difference(totalHours, 45),
-      getLeavingHour(currentHours, 9)
+      getLeavingHour(totalHours, currentHours, 9)
     ]);
 
     console.log("Total Hours", totalHours);
