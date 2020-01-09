@@ -1,6 +1,6 @@
 import * as chalk from 'chalk';
-import * as moment from 'moment';
 import * as Table from 'cli-table3';
+import * as moment from 'moment';
 
 export class Pace {
   private table: any;
@@ -30,13 +30,13 @@ export class Pace {
       `Minimum (${hoursPerDay})`,
       `${this.totalHours} of ${hoursPerWeek}`,
       this.difference(this.totalHours, hoursPerWeek),
-      this.getLeavingHour(this.currentHours, hoursPerDay),
+      this.getLeavingHour(this.totalHours, hoursPerDay),
     ]);
   }
 
   private difference(hours: number, comparison: number): string {
     let differenceOut: string = '';
-    let difference = Number((hours - comparison).toFixed(2));
+    const difference = Number((hours - comparison).toFixed(2));
 
     switch (true) {
       case difference > 0:
@@ -57,14 +57,21 @@ export class Pace {
   private formathours(hours: number) {
     const h = Math.floor(hours);
     let m = String(((hours % 1) * 60).toFixed(0));
-    if (m === '0') m = '00';
-    if (Number(m) < 10 && Number(m) > 0) m = `0${m}`;
+    if (m === '0') {
+      m = '00';
+    }
+    if (Number(m) < 10 && Number(m) > 0) {
+      m = `0${m}`;
+    }
     return `${h}:${m}`;
   }
 
   private getLeavingHour(current: number, total: number) {
     const date = moment();
-    date.add(total - current, 'hours');
+    const targetToday = total * new Date().getDay();
+    const diff = Number((targetToday - current).toFixed(2));
+
+    date.add(diff, 'hours');
 
     return date.format('HH:mm');
   }
