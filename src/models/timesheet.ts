@@ -53,7 +53,7 @@ export class Timesheet extends WebPage {
         });
 
         this.today = new Today(data.clockIn);
-        this.totalHours = Number(data.totalHours);
+        this.totalHours = Number(data.totalHours) + this.today.getCurrentHours();
         resolve();
       } catch (error) {
         reject(error);
