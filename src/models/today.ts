@@ -27,6 +27,6 @@ export class Today {
   }
 
   private getHoursToday(now: number, clockIn: number): number {
-    return Math.abs(now - clockIn) / 36e5;
+    return Number((Math.abs(now - clockIn) / 36e5).toFixed(2));
   }
 }
