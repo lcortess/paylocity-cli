@@ -1,8 +1,19 @@
 # Paylocity time tracker
 Simple paylocity CLI to see worked hours using data scrapping
 
-# Install
+# Using npm 
+* Run `npm install -g paylocity-cli`
+* Copy the .paylocity.example into your home directory
+  - `cp .paylocity.example ~/.paylocity`
+* Fill the params:
+  - PAYLOCITY_COMPANY=xxx
+  - PAYLOCITY_USER=xxx
+  - PAYLOCITY_PASSWORD=xxx
+  - PAYLOCITY_FINGERPRINT=xxx
+    - Please take a look at How to obtain the Fingerprint
+ * Simply run `paylocity` on the command line
 
+# Manual Install
 * Download and uncompress the project into a folder
 * Copy the .paylocity.example into your home directory
   - `cp .paylocity.example ~/.paylocity`
@@ -13,8 +24,6 @@ Simple paylocity CLI to see worked hours using data scrapping
   - PAYLOCITY_FINGERPRINT=xxx
     - Please take a look at How to obtain the Fingerprint
 * run `npm install`
-
-# Usage
 * Run the script using node `node index.js`
 
 # How to obtain the Fingerprint
