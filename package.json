@@ -1,8 +1,9 @@
 {
   "name": "paylocity-cli",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "This is a simple CLI to track the worked hours in the paylocity system by data scraping",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "dependencies": {
     "chalk": "^3.0.0",
     "cli-table3": "^0.5.1",
@@ -10,10 +11,34 @@
     "moment": "^2.24.0",
     "puppeteer": "^2.0.0"
   },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "devDependencies": {
+    "@types/node": "^13.1.4",
+    "@types/puppeteer": "^2.0.0",
+    "jshint": "^2.11.0-rc1",
+    "prettier": "^1.19.1",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.7.4"
   },
-  "author": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:lcortess/paylocity-cli.git"
+  },
+  "bin": {
+    "paylocity": "./lib/index.js"
+  },
+  "keywords": [
+    "paylocity",
+    "cli",
+    "productivity",
+    "paylocity-cli"
+  ],
+  "author": "lcortess",
   "license": "ISC"
 }
