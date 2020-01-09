@@ -1,49 +1,29 @@
-import * as puppeteer from 'puppeteer';
-import { Login } from './login';
 import { Today } from './today';
+import { WebPage } from './web-page';
 
-export class Timesheet {
+export class Timesheet extends WebPage {
   public today: Today;
   public totalHours: number = 0;
 
-  private login: Login;
-  private timesheetUri: string;
-  private page: puppeteer.Page | undefined;
-  private browser: puppeteer.Browser | undefined;
-
   constructor() {
-    this.login = new Login();
-    this.today = new Today('00:00 AM');
-    this.timesheetUri = 'https://webtime2.paylocity.com/WebTime/Employee/Timesheet';
+    super('https://webtime2.paylocity.com/WebTime/Employee/Timesheet', '#GroupTotals');
+
+    this.today = new Today('01:00 AM');
   }
 
   /**
-   * Loads the timesheet page
+   * Starts the page and load the hours into the class
    */
-  public loadPage(): Promise<void> {
+  public start(): Promise<void> {
     return new Promise(async (resolve, reject) => {
       try {
-        const data = await this.login.loginPage();
-        this.page = data.page;
-        this.browser = data.browser;
-        await this.page.goto(this.timesheetUri);
-        await this.page.waitForSelector('#GroupTotals');
+        await this.loadPage();
         await this.loadHours();
         resolve();
       } catch (error) {
         reject(error);
       }
     });
-  }
-
-  /**
-   * Closes browser instance
-   */
-  public closePage(): Promise<void> {
-    if (!this.browser) {
-      return Promise.reject('Browser does not exist');
-    }
-    return this.browser.close();
   }
 
   /**

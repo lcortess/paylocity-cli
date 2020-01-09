@@ -2,9 +2,9 @@ import { Timesheet } from './models/timesheet';
 
 const time: Timesheet = new Timesheet();
 time
-  .loadPage()
+  .start()
   .then(() => {
-    console.log(time.totalHours);
+    console.log(time.totalHours, time.today.getClockInHour());
     time.closePage();
   })
   .catch(error => {
