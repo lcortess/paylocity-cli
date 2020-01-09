@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { Timesheet } from './models/timesheet';
 import { Pace } from './views/Pace';
 
