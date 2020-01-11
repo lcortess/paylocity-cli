@@ -45,4 +45,19 @@ export class CLI {
     const config = new Config();
     console.log(`Config File: ${config.getConfigPath()}`);
   }
+
+  /**
+   * Shows interactive shell to setup hour format
+   */
+  public doHourConfig(): void {
+    const config = new Config();
+    config
+      .doConfigHour()
+      .then(() => {
+        console.log(chalk.green('Hour format configured successfully!'));
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
 }

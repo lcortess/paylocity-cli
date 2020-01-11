@@ -65,4 +65,20 @@ export class Config {
   public getConfigPath(): string {
     return this.config.path;
   }
+
+  /**
+   * Executes interactive shell to set config hour format
+   */
+  public doConfigHour(): Promise<void> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const question: inquirer.QuestionCollection = (this.questions as any)[4];
+        const answers = await inquirer.prompt(question);
+        this.config.hourFormat = answers.hourFormat;
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
 }
