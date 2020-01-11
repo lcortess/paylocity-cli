@@ -6,7 +6,7 @@ export class Hour {
   private minutes: number;
 
   /**
-   * Hour must be in the format "HH:mm A" i.e. "10:02 AM", "01:59 PM"
+   * Hour must be in the format "hh:mm A" i.e. "10:02 AM", "01:59 PM"
    * @param hour
    */
   constructor(hour: string) {

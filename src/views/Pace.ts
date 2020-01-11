@@ -1,39 +1,19 @@
 import * as chalk from 'chalk';
 import * as moment from 'moment';
 import * as Table from 'cli-table3';
-import { Timesheet } from '../models/timesheet';
 
 export class Pace {
   private table: any;
   private totalHours: number;
   private currentHours: number;
 
-  constructor() {
-    this.totalHours = 0;
-    this.currentHours = 0;
-  }
+  constructor(totalHours: number, currentHours: number) {
+    this.totalHours = totalHours;
+    this.currentHours = currentHours;
 
-  public loadTable(): Promise<Pace> {
-    return new Promise((resolve, reject) => {
-      const time: Timesheet = new Timesheet();
-
-      time
-        .start()
-        .then(() => {
-          console.log('ClockIn: ', time.today.getClockInHour());
-          console.log('Total hours: ', time.totalHours);
-          console.log('Today Hours: ', time.today.getCurrentHours());
-
-          this.totalHours = time.totalHours;
-          this.currentHours = time.today.getCurrentHours();
-          time.closePage();
-          this.createTable();
-          resolve(this);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    console.log('Total hours: ', totalHours);
+    console.log('Today Hours: ', currentHours);
+    this.createTable();
   }
 
   public getTable(): string {
@@ -51,12 +31,12 @@ export class Pace {
   }
 
   private setRow(hoursPerDay: number): void {
-    const hoursPerWeek = hoursPerDay * 5;
+    const goalToday = hoursPerDay * (new Date().getDay() - 1);
 
     this.table.push([
       `Minimum (${hoursPerDay})`,
-      `${this.totalHours} of ${hoursPerWeek}`,
-      this.difference(this.totalHours, hoursPerWeek),
+      `${this.totalHours.toFixed(2)} of ${goalToday}`,
+      this.difference(this.totalHours, goalToday),
       this.getLeavingHour(this.totalHours, hoursPerDay),
     ]);
   }
@@ -67,13 +47,13 @@ export class Pace {
 
     switch (true) {
       case difference > 0:
-        differenceOut = chalk.green(`+${this.formathours(difference)}`);
+        differenceOut = chalk.green(`+${this.formatHours(difference)}`);
         break;
       case difference == 0:
-        differenceOut = ` ${chalk.yellow(this.formathours(0))}`;
+        differenceOut = ` ${chalk.yellow(this.formatHours(0))}`;
         break;
       case difference < 0:
-        differenceOut = chalk.red(`-${this.formathours(Math.abs(difference))}`);
+        differenceOut = chalk.red(`-${this.formatHours(Math.abs(difference))}`);
       default:
         difference;
     }
@@ -81,7 +61,7 @@ export class Pace {
     return differenceOut;
   }
 
-  private formathours(hours: number) {
+  private formatHours(hours: number) {
     const h = Math.floor(hours);
     let m = String(((hours % 1) * 60).toFixed(0));
     if (m === '0') {

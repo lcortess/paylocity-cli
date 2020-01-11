@@ -1,6 +1,7 @@
 import { Pace } from './Pace';
 import * as chalk from 'chalk';
 import { Config } from './config';
+import { Timesheet } from '../models/timesheet';
 
 export class CLI {
   constructor() {}
@@ -9,11 +10,13 @@ export class CLI {
    * Logs Pace table
    */
   public showPace(): void {
-    const pace: Pace = new Pace();
-    pace
-      .loadTable()
-      .then(table => {
-        console.log(table.getTable());
+    const time: Timesheet = new Timesheet();
+    time
+      .start()
+      .then(() => {
+        time.closePage();
+        const pace: Pace = new Pace(time.totalHours, time.today.getCurrentHours());
+        console.log(pace.getTable());
       })
       .catch(error => {
         console.log(error);
