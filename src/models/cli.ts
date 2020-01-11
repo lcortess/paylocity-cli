@@ -1,4 +1,6 @@
+import * as chalk from 'chalk';
 import { Pace } from '../views/Pace';
+import { Config } from '../views/config';
 
 export class CLI {
   constructor() {}
@@ -22,6 +24,14 @@ export class CLI {
    * Shows interactive shell to setup account
    */
   public showSetup(): void {
-    console.log('showing setup');
+    const config = new Config();
+    config
+      .doSetup()
+      .then(() => {
+        console.log(chalk.green('Account configured successfully!'));
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 }

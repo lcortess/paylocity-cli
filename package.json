@@ -5,10 +5,13 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "dependencies": {
+    "@types/inquirer": "^6.5.0",
     "chalk": "^3.0.0",
     "cli-table3": "^0.5.1",
     "commander": "^4.1.0",
+    "configstore": "^5.0.0",
     "dotenv": "^8.2.0",
+    "inquirer": "^7.0.3",
     "moment": "^2.24.0",
     "puppeteer": "^2.0.0"
   },
