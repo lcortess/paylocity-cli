@@ -1,6 +1,6 @@
+import { Pace } from './Pace';
 import * as chalk from 'chalk';
-import { Pace } from '../views/Pace';
-import { Config } from '../views/config';
+import { Config } from './config';
 
 export class CLI {
   constructor() {}
@@ -33,5 +33,13 @@ export class CLI {
       .catch(error => {
         console.log(error);
       });
+  }
+
+  /**
+   * Shows the path to the config file
+   */
+  public showConfigPath(): void {
+    const config = new Config();
+    console.log(`Config File: ${config.getConfigPath()}`);
   }
 }

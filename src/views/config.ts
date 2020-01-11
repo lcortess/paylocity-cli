@@ -1,6 +1,8 @@
 import * as inquirer from 'inquirer';
+import { Configuration } from '../models/configuration';
 
 export class Config {
+  private config: Configuration;
   private readonly questions: inquirer.QuestionCollection = [
     {
       type: 'input',
@@ -9,7 +11,7 @@ export class Config {
     },
     {
       type: 'input',
-      name: 'user',
+      name: 'username',
       message: "What's your username?",
     },
     {
@@ -33,21 +35,34 @@ export class Config {
     },
   ];
 
-  constructor() {}
+  constructor() {
+    this.config = new Configuration();
+  }
 
   /**
-   * Excecutes interactive shell and saves user config data
+   * Executes interactive shell and saves user config data
    */
   public doSetup(): Promise<void> {
     return new Promise(async (resolve, reject) => {
       try {
         const answers = await inquirer.prompt(this.questions);
-        console.log(JSON.stringify(answers, null, 4));
+        this.config.username = answers.username;
+        this.config.password = answers.password;
+        this.config.companyId = answers.companyId;
+        this.config.hourFormat = answers.hourFormat;
+        this.config.fingerprint = answers.fingerprint;
 
         resolve();
       } catch (error) {
         reject(error);
       }
     });
+  }
+
+  /**
+   * Returns the path to the config file
+   */
+  public getConfigPath(): string {
+    return this.config.path;
   }
 }
