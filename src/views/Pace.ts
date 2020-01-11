@@ -1,15 +1,46 @@
 import * as chalk from 'chalk';
-import * as Table from 'cli-table3';
 import * as moment from 'moment';
+import * as Table from 'cli-table3';
+import { Timesheet } from '../models/timesheet';
 
 export class Pace {
   private table: any;
   private totalHours: number;
   private currentHours: number;
 
-  constructor(totalHours: number, currentHours: number) {
-    this.totalHours = totalHours;
-    this.currentHours = currentHours;
+  constructor() {
+    this.totalHours = 0;
+    this.currentHours = 0;
+  }
+
+  public loadTable(): Promise<Pace> {
+    return new Promise((resolve, reject) => {
+      const time: Timesheet = new Timesheet();
+
+      time
+        .start()
+        .then(() => {
+          console.log('ClockIn: ', time.today.getClockInHour());
+          console.log('Total hours: ', time.totalHours);
+          console.log('Today Hours: ', time.today.getCurrentHours());
+
+          this.totalHours = time.totalHours;
+          this.currentHours = time.today.getCurrentHours();
+          time.closePage();
+          this.createTable();
+          resolve(this);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
+  public getTable(): string {
+    return this.table.toString();
+  }
+
+  private createTable(): void {
     this.table = new Table({
       head: ['Pace', 'Hours', 'Diff', 'Leave by'],
     });
@@ -17,10 +48,6 @@ export class Pace {
     this.setRow(7);
     this.setRow(8);
     this.setRow(9);
-  }
-
-  public getTable(): string {
-    return this.table.toString();
   }
 
   private setRow(hoursPerDay: number): void {

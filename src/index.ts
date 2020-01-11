@@ -1,21 +1,22 @@
 #!/usr/bin/env node
 
-import { Timesheet } from './models/timesheet';
-import { Pace } from './views/Pace';
+import { CLI } from './models/cli';
+import * as commander from 'commander';
+const pkg = require('../package.json');
 
-const time: Timesheet = new Timesheet();
-time
-  .start()
-  .then(() => {
-    console.log('ClockIn: ', time.today.getClockInHour());
-    console.log('Total hours: ', time.totalHours);
-    console.log('Today Hours: ', time.today.getCurrentHours());
+(() => {
+  const cli = new CLI();
+  const program = new commander.Command();
 
-    const pace = new Pace(time.totalHours, time.today.getCurrentHours());
-    console.log(pace.getTable());
+  program
+    .name('Paylocity CLI')
+    .description(pkg.description)
+    .option('-s --setup', 'Shows interactive questions to config account')
+    .version(pkg.version);
 
-    time.closePage();
-  })
-  .catch(error => {
-    console.log(error);
-  });
+  program.parse(process.argv);
+
+  if (program.setup) return cli.showSetup();
+
+  return cli.showPace();
+})();
