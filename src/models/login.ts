@@ -1,12 +1,12 @@
 import * as puppeteer from 'puppeteer';
-import { Credentials } from './credentials';
+import { Configuration } from './configuration';
 
 export class Login {
-  private credentials: Credentials;
+  private config: Configuration;
   private loginUri = 'https://access.paylocity.com';
 
   constructor() {
-    this.credentials = new Credentials();
+    this.config = new Configuration();
   }
 
   /**
@@ -78,10 +78,10 @@ export class Login {
         const f = <any>document.querySelector('#PaylocityFingerprintData');
         if (f) f.value = fingerprint;
       },
-      this.credentials.companyId,
-      this.credentials.username,
-      this.credentials.password,
-      this.credentials.fingerprint,
+      this.config.companyId,
+      this.config.username,
+      this.config.password,
+      this.config.fingerprint,
     );
   }
 }

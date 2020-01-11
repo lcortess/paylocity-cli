@@ -1,27 +1,36 @@
 {
   "name": "paylocity-cli",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "This is a simple CLI to track the worked hours in the paylocity system by data scraping",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "dependencies": {
     "chalk": "^3.0.0",
     "cli-table3": "^0.5.1",
-    "dotenv": "^8.2.0",
+    "commander": "^4.1.0",
+    "configstore": "^5.0.0",
+    "inquirer": "^7.0.3",
     "moment": "^2.24.0",
     "puppeteer": "^2.0.0"
   },
   "devDependencies": {
+    "@types/configstore": "^4.0.0",
+    "@types/chai": "^4.2.7",
+    "@types/inquirer": "^6.5.0",
+    "@types/mocha": "^5.2.7",
     "@types/node": "^13.1.4",
     "@types/puppeteer": "^2.0.0",
+    "chai": "^4.2.0",
     "jshint": "^2.11.0-rc1",
+    "mocha": "^7.0.0",
     "prettier": "^1.19.1",
+    "ts-node": "^8.5.4",
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.7.4"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha -r ts-node/register src/**/*.spec.ts",
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json"
