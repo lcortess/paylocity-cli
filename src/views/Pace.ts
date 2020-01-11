@@ -1,15 +1,18 @@
 import * as chalk from 'chalk';
 import * as moment from 'moment';
 import * as Table from 'cli-table3';
+import { Configuration } from '../models/configuration';
 
 export class Pace {
   private table: any;
   private totalHours: number;
   private currentHours: number;
+  private config: Configuration;
 
   constructor(totalHours: number, currentHours: number) {
     this.totalHours = totalHours;
     this.currentHours = currentHours;
+    this.config = new Configuration();
     this.createTable();
   }
 
@@ -107,6 +110,6 @@ export class Pace {
 
     date.add(diff, 'hours');
 
-    return date.format('HH:mm');
+    return date.format(this.config.hourFormat);
   }
 }
