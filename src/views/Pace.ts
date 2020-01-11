@@ -10,19 +10,23 @@ export class Pace {
   constructor(totalHours: number, currentHours: number) {
     this.totalHours = totalHours;
     this.currentHours = currentHours;
-
-    console.log('Total hours: ', totalHours);
-    console.log('Today Hours: ', currentHours);
     this.createTable();
   }
 
+  /**
+   * Returns table as string
+   */
   public getTable(): string {
     return this.table.toString();
   }
 
+  /**
+   * Creates table object with headers and
+   * set the rows using class data
+   */
   private createTable(): void {
     this.table = new Table({
-      head: ['Pace', 'Hours', 'Diff', 'Leave by'],
+      head: ['Pace', 'Hours', 'Diff', 'Leave by'].map(text => `${chalk.white.bold(text)}`),
     });
 
     this.setRow(7);
@@ -30,8 +34,13 @@ export class Pace {
     this.setRow(9);
   }
 
+  /**
+   * Adds a new row to the table
+   *
+   * @param hoursPerDay The number of hours per day
+   */
   private setRow(hoursPerDay: number): void {
-    const goalToday = hoursPerDay * (new Date().getDay() - 1);
+    const goalToday = hoursPerDay * new Date().getDay();
 
     this.table.push([
       `Minimum (${hoursPerDay})`,
@@ -41,6 +50,13 @@ export class Pace {
     ]);
   }
 
+  /**
+   * Returns the differeence between the total hours and
+   * the goal to reach
+   *
+   * @param hours Total hours
+   * @param comparison The hours goal for today
+   */
   private difference(hours: number, comparison: number): string {
     let differenceOut: string = '';
     const difference = Number((hours - comparison).toFixed(2));
@@ -50,7 +66,7 @@ export class Pace {
         differenceOut = chalk.green(`+${this.formatHours(difference)}`);
         break;
       case difference == 0:
-        differenceOut = ` ${chalk.yellow(this.formatHours(0))}`;
+        differenceOut = chalk.yellow(this.formatHours(0));
         break;
       case difference < 0:
         differenceOut = chalk.red(`-${this.formatHours(Math.abs(difference))}`);
@@ -61,7 +77,12 @@ export class Pace {
     return differenceOut;
   }
 
-  private formatHours(hours: number) {
+  /**
+   * Formats the number of hours to hours/minutes to be more readable
+   *
+   * @param hours Number of hours
+   */
+  private formatHours(hours: number): string {
     const h = Math.floor(hours);
     let m = String(((hours % 1) * 60).toFixed(0));
     if (m === '0') {
@@ -73,6 +94,12 @@ export class Pace {
     return `${h}:${m}`;
   }
 
+  /**
+   * Return the leaving time today according to the hours passed
+   *
+   * @param current Current number of hours
+   * @param total Hours to reach
+   */
   private getLeavingHour(current: number, total: number) {
     const date = moment();
     const targetToday = total * new Date().getDay();
