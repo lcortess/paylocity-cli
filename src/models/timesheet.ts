@@ -36,23 +36,48 @@ export class Timesheet extends WebPage {
       }
 
       try {
-        const data = await this.page.evaluate(() => {
-          const today = new Date();
+        const data = await this.page.evaluate(dayNumber => {
+          const hours: string[][] = [];
+          // The rows with the times on the table
+          const timeRows = document
+            .querySelector(`#TimesheetContainer #Timesheet > tbody > #TimeSheet_${dayNumber - 1}_`)!
+            .querySelectorAll('table .pay-type-description');
+
+          // Return the time by row using the passed index
+          const getTime = function(element: Element, index: number) {
+            return element.children[index]!.children[0]!.textContent!.trim();
+          };
+
+          // Get clockin and clock out by row, number 2 is for clock in in the row
+          // and 3 for clock out
+          if (timeRows && timeRows.length > 0) {
+            timeRows.forEach(row => {
+              hours.push([getTime(row, 2), getTime(row, 3)]);
+            });
+          }
 
           return {
-            clockIn: document
-              .querySelector(`#TimesheetContainer #Timesheet > tbody > #TimeSheet_${today.getDay() - 1}_`)!
-              .querySelector('table tr')!
-              .children[2]!.children[0]!.textContent!.trim(),
+            timeRows: hours,
             totalHours: document
               .querySelector('#GroupTotals')!
               .querySelector('tbody td')!
               .firstChild!.textContent!.trim()
               .replace(' hrs', ''),
           };
-        });
+        }, new Date().getDay());
 
-        this.today = new Today(data.clockIn);
+        // console.log('DATA', JSON.stringify(data, null, 4));
+
+        this.today = new Today(data.timeRows[0][0], data.timeRows[0][1]);
+
+        // When there is more than 1 clock in/out in the day the times are added
+        // To the today object
+        if (data.timeRows.length > 1) {
+          for (let i = 1; i < data.timeRows.length; i++) {
+            this.today.setTimeRow(data.timeRows[i][0], data.timeRows[i][1]);
+          }
+        }
+
         this.totalHours = Number(data.totalHours) + this.today.getCurrentHours();
         resolve();
       } catch (error) {
