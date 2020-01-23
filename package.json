@@ -33,7 +33,8 @@
     "test": "mocha -r ts-node/register src/**/*.spec.ts",
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
-    "lint": "tslint -p tsconfig.json"
+    "lint": "tslint -p tsconfig.json",
+    "local": "tsc && node lib/index.js"
   },
   "repository": {
     "type": "git",
