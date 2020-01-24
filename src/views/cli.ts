@@ -15,7 +15,7 @@ export class CLI {
       .start()
       .then(() => {
         time.closePage();
-        const pace: Pace = new Pace(time.totalHours, time.today.getCurrentHours());
+        const pace: Pace = new Pace(time.totalHours, time.today.getCurrentHours(), time.today.getClockOutHour());
         console.log(pace.getTable());
       })
       .catch(error => {

@@ -27,6 +27,14 @@ export class Today {
   }
 
   /**
+   * Returns the last clockOut time if exists as a new moment object
+   */
+  public getClockOutHour(): moment.Moment | null {
+    const index = this.clockOut.length - 1;
+    return this.clockOut[index]!.clone();
+  }
+
+  /**
    * Returns the calculated current hours using the last clockOut - clockIn hours
    */
   public getCurrentHours(): number {

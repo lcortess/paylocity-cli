@@ -48,7 +48,7 @@ export class Timesheet extends WebPage {
             return element.children[index]!.children[0]!.textContent!.trim();
           };
 
-          // Get clockin and clock out by row, number 2 is for clock in in the row
+          // Get clockIn and clock out by row, number 2 is for clock in in the row
           // and 3 for clock out
           if (timeRows && timeRows.length > 0) {
             timeRows.forEach(row => {
@@ -65,8 +65,6 @@ export class Timesheet extends WebPage {
               .replace(' hrs', ''),
           };
         }, new Date().getDay());
-
-        // console.log('DATA', JSON.stringify(data, null, 4));
 
         this.today = new Today(data.timeRows[0][0], data.timeRows[0][1]);
 
