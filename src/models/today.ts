@@ -31,7 +31,7 @@ export class Today {
    */
   public getClockOutHour(): moment.Moment | null {
     const index = this.clockOut.length - 1;
-    return this.clockOut[index]!.clone();
+    return this.clockOut[index] ? this.clockOut[index]!.clone() : null;
   }
 
   /**
