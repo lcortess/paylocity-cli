@@ -15,7 +15,7 @@ Simple paylocity CLI to see worked hours using data scrapping
 
 # How to obtain the Fingerprint
 
-To use the fingerprint, you should indicate first to remember your username in order to prevent paylocity keep asking 
+To use the fingerprint, you should indicate first to remember your username in order to prevent paylocity keep asking
 for security questions.
 
 - For the fingerprint:
@@ -25,7 +25,9 @@ for security questions.
   - Remember **TO NOT** copy the first and last quotes.
   - Example: the finger print may look like the following:
     `{"uaPlatform":"Mac OS11.15.1","language":"en-US","timezone":"Central Standard Time","depth":24,"resolution":"1440x2537","browser":"Chrome85","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.3945.88 Safari/537.36","plugins":"Chrome PDF Plugin, Chrome PDF Viewer, Native Client","fonts":"Arial Black, Arial, Bauhaus 93, ","canvas":"3985551669"}`
-    
+
 # Contributing
-- Fork the repository. 
-- Create a Pull request using Develop branch as base.
+
+- Fork the repository.
+- To run the local changes type `npm run local`
+- Create a Pull request using `Develop` branch as base.
