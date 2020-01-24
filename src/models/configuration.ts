@@ -53,10 +53,10 @@ export class Configuration {
   }
 
   private encode(value: string): string {
-    return new Buffer(value).toString('base64');
+    return Buffer.from(value, 'ascii').toString('base64');
   }
 
   private decode(value: string = ''): string {
-    return new Buffer(value, 'base64').toString('ascii');
+    return Buffer.from(value, 'base64').toString('ascii');
   }
 }

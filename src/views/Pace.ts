@@ -8,11 +8,14 @@ export class Pace {
   private totalHours: number;
   private currentHours: number;
   private config: Configuration;
+  private clockOut: moment.Moment | null;
 
-  constructor(totalHours: number, currentHours: number) {
+  constructor(totalHours: number, currentHours: number, clockOut: moment.Moment | null) {
+    this.clockOut = clockOut;
     this.totalHours = totalHours;
     this.currentHours = currentHours;
     this.config = new Configuration();
+
     this.createTable();
   }
 
@@ -32,9 +35,9 @@ export class Pace {
       head: ['Pace', 'Hours', 'Diff', 'Leave by'].map(text => `${chalk.white.bold(text)}`),
     });
 
-    this.setRow(7);
-    this.setRow(8);
-    this.setRow(9);
+    this.setRow(7, 'Minimum');
+    this.setRow(8, 'Standard');
+    this.setRow(9, 'Overtime');
   }
 
   /**
@@ -42,14 +45,14 @@ export class Pace {
    *
    * @param hoursPerDay The number of hours per day
    */
-  private setRow(hoursPerDay: number): void {
+  private setRow(hoursPerDay: number, type: string): void {
     const goalToday = hoursPerDay * new Date().getDay();
 
     this.table.push([
-      `Minimum (${hoursPerDay})`,
+      `${type} (${hoursPerDay})`,
       `${this.totalHours.toFixed(2)} of ${goalToday}`,
       this.difference(this.totalHours, goalToday),
-      this.getLeavingHour(this.totalHours, hoursPerDay),
+      this.getLeavingHour(this.totalHours, hoursPerDay, this.clockOut),
     ]);
   }
 
@@ -102,10 +105,11 @@ export class Pace {
    *
    * @param current Current number of hours
    * @param total Hours to reach
+   * @param clockOut When the user already did clockOut this object has the hour
    */
-  private getLeavingHour(current: number, total: number) {
-    const date = moment();
+  private getLeavingHour(current: number, total: number, clockOut: moment.Moment | null) {
     const targetToday = total * new Date().getDay();
+    const date = clockOut ? clockOut.clone() : moment();
     const diff = Number((targetToday - current).toFixed(2));
 
     date.add(diff, 'hours');

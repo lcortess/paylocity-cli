@@ -1,6 +1,6 @@
 {
   "name": "paylocity-cli",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "This is a simple CLI to track the worked hours in the paylocity system by data scraping",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -33,7 +33,8 @@
     "test": "mocha -r ts-node/register src/**/*.spec.ts",
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
-    "lint": "tslint -p tsconfig.json"
+    "lint": "tslint -p tsconfig.json",
+    "local": "tsc && node lib/index.js"
   },
   "repository": {
     "type": "git",
