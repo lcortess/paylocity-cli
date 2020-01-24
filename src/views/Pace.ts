@@ -35,9 +35,9 @@ export class Pace {
       head: ['Pace', 'Hours', 'Diff', 'Leave by'].map(text => `${chalk.white.bold(text)}`),
     });
 
-    this.setRow(7);
-    this.setRow(8);
-    this.setRow(9);
+    this.setRow(7, 'Minimum');
+    this.setRow(8, 'Standard');
+    this.setRow(9, 'Overtime');
   }
 
   /**
@@ -45,11 +45,11 @@ export class Pace {
    *
    * @param hoursPerDay The number of hours per day
    */
-  private setRow(hoursPerDay: number): void {
+  private setRow(hoursPerDay: number, type: string): void {
     const goalToday = hoursPerDay * new Date().getDay();
 
     this.table.push([
-      `Minimum (${hoursPerDay})`,
+      `${type} (${hoursPerDay})`,
       `${this.totalHours.toFixed(2)} of ${goalToday}`,
       this.difference(this.totalHours, goalToday),
       this.getLeavingHour(this.totalHours, hoursPerDay, this.clockOut),
