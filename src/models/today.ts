@@ -44,7 +44,7 @@ export class Today {
     if (this.clockOut[index]) return 0;
 
     const clockOut = this.clockOut[index] ? +(<moment.Moment>this.clockOut[index]) : +Date.now();
-    return this.getHoursToday(clockOut, +this.clockIn[0]);
+    return this.getHoursToday(clockOut, +this.clockIn[index]);
   }
 
   /**
